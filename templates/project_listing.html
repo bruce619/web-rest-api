@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Project Listing{% endblock %}
+
+
+{% block content %}
+<center>
+    <h3> Here are the list of availble projects </h3><hr>
+{% if projects %}
+    {% for project in projects %}
+        <li>
+            <a href="{% url 'project-detail' project.id %}" style="color: red;">{{ project.name }}</a>
+        </li>
+    {% endfor %}
+{% else %}
+<p>No available projects</p>
+{% endif %}
+
+
+
+<!--Pagination-->
+            {% if is_paginated %}
+
+                {% if page_obj.has_previous %}
+                    <a style="background: #00ABF0;"  class="btn btn-info mb-4" href="?page=1">First</a>
+                    <a style="background: #00ABF0;"  class="btn btn-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <a style="background: #00ABF0;"  class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <a style="background: #00ABF0;"  class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+
+                 {% if page_obj.has_next %}
+                    <a style="background: #00ABF0;"  class="btn btn-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    <a style="background: #00ABF0;"  class="btn btn-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                 {% endif %}
+
+            {% endif %}
+</center>
+{% endblock content %}

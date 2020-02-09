@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Project Detail{% endblock %}
+
+{% block content %}
+
+<h3>{{object.name | safe }}</h3>
+<div class="mb-5">
+  <h3 class="h5 d-flex align-items-center mb-4 text-primary">Description</h3>
+  <p>{{ object.description|safe }}</p>
+</div>
+{% if project.completed %}
+    <p>This Project has been completed</p>
+{% else %}
+    <p>project yet to be completed</p>
+{% endif %}
+<hr>
+<a class="btn btn-default" href="{% url 'create-action' projects.id %}">Add Action</a>
+<hr>
+{% for action in projects.actions.all %}
+    {% if user.is_authenticated %}
+    <div class="action">
+        <p>{{ action.description|linebreaks }}</p>
+        <p>{{ action.note|linebreaks }}</p>
+    </div>
+    {% endif %}
+{% empty %}
+    <p>No comments here yet :(</p>
+{% endfor %}
+
+Update or delete action <hr>
+{% if object.user == user %}
+<div>
+<a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'action-update' object.id %}">Update action</a>
+<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'action-delete' object.id %}">Delete action</a>
+</div>
+{% endif %}
+<br><hr>
+update or delete project <hr>
+{% if object.user == user %}
+<div>
+<a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'project-update' object.id %}">Update Project</a>
+<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'project-delete' object.id %}">Delete Project</a>
+</div>
+{% endif %}
+
+
+{% endblock %}

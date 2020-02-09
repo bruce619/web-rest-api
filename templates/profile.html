@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="content-section">
+        <div class="media">
+        <div class="media-body">
+            <h2 class="account-heading" style="color: blue;">{{ user.username }}</h2>
+            <p class="text-secondary" style="color: red; text-align: center;">{{ user.email }}</p>
+        </div>
+    </div>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Profile Info</legend>
+            {{ u_form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-warning" type="submit">Update</button>
+        </div>
+    </form>
+    </div>
+
+{% endblock content %}
