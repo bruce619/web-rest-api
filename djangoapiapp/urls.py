@@ -19,6 +19,7 @@ urlpatterns = [
 
     # rest framework urls
     path('api/users/', include('accounts.api.urls', 'accounts_api')),
+    path('api/', include('myapiapp.api.urls')),
 
     # Password reset links (ref: https://github.com/django/django/blob/master/django/contrib/auth/views.py)
     path('password_change/done/',

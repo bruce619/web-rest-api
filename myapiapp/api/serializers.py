@@ -3,6 +3,10 @@ from myapiapp.models import Projects, Actions
 
 
 class ProjectSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=120)
+    description = serializers.CharField()
+    completed = serializers.BooleanField(default=False)
+    username = serializers.SerializerMethodField('get_username_from_user')
 
     def __init__(self, *args, **kwargs):
         # first call parent's constructor
@@ -13,22 +17,34 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Projects
-        fields = '__all__'
+        fields = ['name', 'description', 'completed', 'username']
+
+    def get_username_from_user(self, project):
+        username = project.user.username
+        return username
 
 
 class ActionSerializer(serializers.ModelSerializer):
+    project_id = serializers.IntegerField()
+    description = serializers.CharField()
+    note = serializers.CharField()
+    username = serializers.SerializerMethodField('get_username_from_user')
 
     def __init__(self, *args, **kwargs):
         # first call parent's constructor
         super(ActionSerializer, self).__init__(*args, **kwargs)
         # there's a `fields` property now
-        self.fields['project-id'].required = True
+        self.fields['project_id'].required = True
         self.fields['description'].required = True
         self.fields['note'].required = True
 
     class Meta:
         model = Actions
-        fields = '__all__'
+        fields = ['project_id', 'description', 'note', 'username']
+
+    def get_username_from_user(self, action):
+        username = action.user.username
+        return username
 
 
 
