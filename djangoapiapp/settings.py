@@ -74,9 +74,9 @@ REST_FRAMEWORK = {
         ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-
-
-        ]
+        ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 1,
 }
 
 TEMPLATES = [
@@ -164,4 +164,5 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "login"
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 
