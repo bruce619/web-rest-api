@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="83f43472-c450-474b-a486-10dfb28228f4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/djangoapiapp/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoapiapp/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/djangoapiapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoapiapp/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myapiapp/api/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapiapp/api/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/myapiapp/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapiapp/api/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/myapiapp/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapiapp/api/views.py" afterDir="false" />
     </list>

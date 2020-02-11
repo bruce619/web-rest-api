@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, parser_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from myapiapp.models import Projects, Actions
 from myapiapp.api.serializers import ProjectSerializer, ActionSerializer
@@ -8,7 +8,7 @@ from myapiapp.api.serializers import ProjectSerializer, ActionSerializer
 
 # retrieve a a single project
 @api_view(['GET', ])
-@parser_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def api_detail_project_view(request, projectid):
     try:
         project = Projects.objects.get(slug=projectid)
@@ -19,9 +19,10 @@ def api_detail_project_view(request, projectid):
         serializer = ProjectSerializer(project)
         return Response(serializer.data)
 
+
 # retrieve all project
 @api_view(['GET', ])
-@parser_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def api_all_project_view(request):
     try:
         project = Projects.objects.all()
@@ -35,7 +36,7 @@ def api_all_project_view(request):
 
 # update a project
 @api_view(['PUT', 'PATCH'])
-@parser_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def api_update_project_view(request, projectid):
     try:
         project = Projects.objects.get(slug=projectid)
@@ -59,7 +60,7 @@ def api_update_project_view(request, projectid):
 
 # delete a project
 @api_view(['DELETE', ])
-@parser_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def api_delete_project_view(request, projectid):
     try:
         project = Projects.objects.get(slug=projectid)
@@ -83,7 +84,7 @@ def api_delete_project_view(request, projectid):
 
 #  create a project
 @api_view(['POST', ])
-@parser_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def api_create_project_view(request):
     user = request.user
     project = Projects(user=user)
@@ -102,7 +103,7 @@ def api_create_project_view(request):
 
 # retrieve all action for a particular project
 @api_view(['GET', ])
-@parser_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def api_detail_action_project_view(request, projectid):
     try:
         project = Projects.objects.get(slug=projectid)
@@ -116,7 +117,7 @@ def api_detail_action_project_view(request, projectid):
 
 # retrieve all actions
 @api_view(['GET', ])
-@parser_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def api_all_action_view(request):
     try:
         action = Actions.objects.all()
@@ -130,7 +131,7 @@ def api_all_action_view(request):
 
 # retrieve a single action
 @api_view(['GET', ])
-@parser_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def api_detail_action_view(request, actionid):
     try:
         action = Actions.objects.get(slug=actionid)
@@ -144,7 +145,7 @@ def api_detail_action_view(request, actionid):
 
 # update a given action for a particular project
 @api_view(['PUT', ])
-@parser_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def api_update_action_view(request, actionid, projectid):
     try:
         action = Actions.objects.get(slug=actionid)
@@ -169,7 +170,7 @@ def api_update_action_view(request, actionid, projectid):
 
 # retrieve a given action for a project by id
 @api_view(['GET', ])
-@parser_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def api_detail_action_project_id_view(request, actionid, projectid):
     try:
         action = Actions.objects.get(slug=actionid)
@@ -190,7 +191,7 @@ def api_detail_action_project_id_view(request, actionid, projectid):
 
 # delete action for a particular project
 @api_view(['DELETE', ])
-@parser_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def api_delete_action_view(request, actionid, projectid):
     try:
         action = Actions.objects.get(slug=actionid)
@@ -215,7 +216,7 @@ def api_delete_action_view(request, actionid, projectid):
 
 # Create a project
 @api_view(['POST', ])
-@parser_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def api_create_action_view(request, projectid):
     user = request.user
     action = Actions(user=user)

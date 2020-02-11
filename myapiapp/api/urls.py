@@ -4,7 +4,7 @@ from .views import (
     api_update_project_view,
     api_delete_project_view,
     api_create_project_view,
-    api_all_project_view,
+
 
     api_detail_action_project_view,
     api_detail_action_project_id_view,
@@ -22,7 +22,7 @@ app_name = 'myapiapp'
 
 urlpatterns = [
     path('projects', api_create_project_view, name='project-create'),
-    path('projects', api_all_project_view, name='project-list'),
+
     path('projects/<projectid>', api_detail_project_view, name='project-detail'),
     path('projects/<projectid>', api_update_project_view, name='project-update'),
     path('projects/<projectid>', api_delete_project_view, name='project-delete'),
