@@ -6,38 +6,10 @@ from myapiapp.models import Projects, Actions
 from myapiapp.api.serializers import ProjectSerializer, ActionSerializer
 
 
-# retrieve a a single project
-@api_view(['GET', ])
+# retrieve a a single project, update a project, delete a project
+@api_view(['GET', 'PUT', 'DELETE', ])
 @permission_classes((IsAuthenticated,))
-def api_detail_project_view(request, projectid):
-    try:
-        project = Projects.objects.get(slug=projectid)
-    except Projects.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = ProjectSerializer(project)
-        return Response(serializer.data)
-
-
-# retrieve all project
-@api_view(['GET', ])
-@permission_classes((IsAuthenticated,))
-def api_all_project_view(request):
-    try:
-        project = Projects.objects.all()
-    except Projects.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = ProjectSerializer(project)
-        return Response(serializer.data)
-
-
-# update a project
-@api_view(['PUT', 'PATCH'])
-@permission_classes((IsAuthenticated,))
-def api_update_project_view(request, projectid):
+def api_get_update_delete_project_view(request, projectid):
     try:
         project = Projects.objects.get(slug=projectid)
     except Projects.DoesNotExist:
@@ -48,7 +20,11 @@ def api_update_project_view(request, projectid):
     if project.user != user:
         return Response({'Response': 'You do not have the permission to edit this'})
 
-    if request.method == 'PUT':
+    if request.method == 'GET':
+        serializer = ProjectSerializer(project)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
         serializer = ProjectSerializer(project, request.data)
         data = {}
         if serializer.is_valid():
@@ -57,22 +33,7 @@ def api_update_project_view(request, projectid):
             return Response(data=data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-# delete a project
-@api_view(['DELETE', ])
-@permission_classes((IsAuthenticated,))
-def api_delete_project_view(request, projectid):
-    try:
-        project = Projects.objects.get(slug=projectid)
-    except Projects.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    user = request.user
-
-    if project.user != user:
-        return Response({'Response': 'You do not have the permission to delete this'})
-
-    if request.method == 'DELETE':
+    elif request.method == 'DELETE':
         operation = project.delete()
         data = {}
         if operation:
@@ -82,14 +43,21 @@ def api_delete_project_view(request, projectid):
         return Response(data=data)
 
 
-#  create a project
-@api_view(['POST', ])
-@permission_classes((IsAuthenticated,))
-def api_create_project_view(request):
-    user = request.user
-    project = Projects(user=user)
+# update a project
 
-    if request.method == 'POST':
+#  create a project, get all projects
+@api_view(['GET', 'POST', ])
+@permission_classes((IsAuthenticated,))
+def api_get_create_project_view(request):
+
+    if request.method == 'GET':
+        project = Projects.objects.all()
+        serializer = ProjectSerializer(project, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        user = request.user
+        project = Projects(user=user)
         serializer = ProjectSerializer(project, data=request.data)
         data = {}
         if serializer.is_valid():
@@ -99,20 +67,6 @@ def api_create_project_view(request):
 
 
 ###########################################################
-
-
-# retrieve all action for a particular project
-@api_view(['GET', ])
-@permission_classes((IsAuthenticated,))
-def api_detail_action_project_view(request, projectid):
-    try:
-        project = Projects.objects.get(slug=projectid)
-    except Projects.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = ActionSerializer(project)
-        return Response(serializer.data)
 
 
 # retrieve all actions
@@ -132,7 +86,7 @@ def api_all_action_view(request):
 # retrieve a single action
 @api_view(['GET', ])
 @permission_classes((IsAuthenticated,))
-def api_detail_action_view(request, actionid):
+def api_single_action_view(request, actionid):
     try:
         action = Actions.objects.get(slug=actionid)
     except Projects.DoesNotExist:
@@ -143,35 +97,10 @@ def api_detail_action_view(request, actionid):
         return Response(serializer.data)
 
 
-# update a given action for a particular project
-@api_view(['PUT', ])
+# get, update, delete action
+@api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes((IsAuthenticated,))
-def api_update_action_view(request, actionid, projectid):
-    try:
-        action = Actions.objects.get(slug=actionid)
-        project = Projects.objects.get(slug=projectid)
-    except Projects.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    user = request.user
-
-    if project.user != user and action.user != user:
-        return Response({'Response': 'You do not have the permission to edit this'})
-
-    if request.method == 'PUT':
-        serializer = ActionSerializer(action, request.data)
-        data = {}
-        if serializer.is_valid():
-            serializer.save()
-            data['success'] = 'Update Successful'
-            return Response(data=data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# retrieve a given action for a project by id
-@api_view(['GET', ])
-@permission_classes((IsAuthenticated,))
-def api_detail_action_project_id_view(request, actionid, projectid):
+def api_get_update_delete_action_view(request, actionid, projectid):
     try:
         action = Actions.objects.get(slug=actionid)
         project = Projects.objects.get(slug=projectid)
@@ -188,23 +117,16 @@ def api_detail_action_project_id_view(request, actionid, projectid):
             serializer = ActionSerializer(action, project)
             return Response(serializer.data)
 
+    elif request.method == 'PUT':
+        serializer = ActionSerializer(action, request.data)
+        data = {}
+        if serializer.is_valid():
+            serializer.save()
+            data['success'] = 'Update Successful'
+            return Response(data=data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# delete action for a particular project
-@api_view(['DELETE', ])
-@permission_classes((IsAuthenticated,))
-def api_delete_action_view(request, actionid, projectid):
-    try:
-        action = Actions.objects.get(slug=actionid)
-        project = Projects.objects.get(slug=projectid)
-    except Projects.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    user = request.user
-
-    if project.user != user and action.user != user:
-        return Response({'Response': 'You do not have the permission to delete this'})
-
-    if request.method == 'DELETE':
+    elif request.method == 'DELETE':
         operation = action.delete()
         data = {}
         if operation:
@@ -214,15 +136,23 @@ def api_delete_action_view(request, actionid, projectid):
         return Response(data=data)
 
 
-# Create a project
-@api_view(['POST', ])
+# Get an action, Create a action
+@api_view(['GET', 'POST', ])
 @permission_classes((IsAuthenticated,))
-def api_create_action_view(request, projectid):
+def api_get_create_action_view(request, projectid):
+    try:
+        project = Projects.objects.get(slug=projectid)
+    except Projects.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
     user = request.user
     action = Actions(user=user)
 
-    if request.method == 'POST':
-        project = Projects.objects.get(slug=projectid)
+    if request.method == 'GET':
+        serializer = ActionSerializer(project)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
         serializer = ActionSerializer(action, data=request.data)
         data = {}
         if serializer.is_valid():
@@ -231,4 +161,5 @@ def api_create_action_view(request, projectid):
             action.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 

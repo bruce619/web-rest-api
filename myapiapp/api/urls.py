@@ -1,17 +1,12 @@
-from django.urls import path, include
+from django.urls import path
 from .views import (
-    api_detail_project_view,
-    api_update_project_view,
-    api_delete_project_view,
-    api_create_project_view,
+    api_get_create_project_view,
+    api_get_update_delete_project_view,
 
 
-    api_detail_action_project_view,
-    api_detail_action_project_id_view,
-    api_detail_action_view,
-    api_update_action_view,
-    api_delete_action_view,
-    api_create_action_view,
+    api_get_create_action_view,
+    api_get_update_delete_action_view,
+    api_single_action_view,
     api_all_action_view,
 
 
@@ -21,19 +16,12 @@ from .views import (
 app_name = 'myapiapp'
 
 urlpatterns = [
-    path('projects', api_create_project_view, name='project-create'),
+    path('projects', api_get_create_project_view, name='project-get-create'),
+    path('projects/<projectid>', api_get_update_delete_project_view, name='project-get-update-delete'),
 
-    path('projects/<projectid>', api_detail_project_view, name='project-detail'),
-    path('projects/<projectid>', api_update_project_view, name='project-update'),
-    path('projects/<projectid>', api_delete_project_view, name='project-delete'),
-
-    path('projects/<projectid>/actions', api_create_action_view, name='action-create'),
+    path('projects/<projectid>/actions', api_get_create_action_view, name='action-get_create'),
     path('actions', api_all_action_view, name='action-list'),
-    path('projects/<projectid>/actions', api_detail_action_project_view, name='action-project-detail'),
-    path('actions/<actionid>', api_detail_action_view, name='action-detail'),
-    path('projects/projects/<projectid>/actions/<actionid>', api_detail_action_project_id_view, name='action-id-detail'),
-    path('projects/projects/<projectid>/actions/<actionid>', api_update_action_view, name='action-update'),
-    path('projects/projects/<projectid>/actions/<actionid>', api_delete_action_view, name='action-delete'),
-
+    path('actions/<actionid>', api_single_action_view, name='action-single-action'),
+    path('projects/projects/<projectid>/actions/<actionid>', api_get_update_delete_action_view, name='action-get-update-delete-action'),
 
 ]
