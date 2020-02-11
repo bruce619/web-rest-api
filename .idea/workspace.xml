@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="83f43472-c450-474b-a486-10dfb28228f4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/procfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/runtime.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/djangoapiapp/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoapiapp/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/djangoapiapp/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoapiapp/wsgi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myapiapp/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapiapp/api/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,10 +76,10 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="237" y="0" key="SettingsEditor/0.0.1366.768@0.0.1366.768" timestamp="1581412553530" />
-    <state x="378" y="206" key="com.intellij.ide.util.TipDialog" timestamp="1581406512463">
+    <state x="378" y="206" key="com.intellij.ide.util.TipDialog" timestamp="1581418405935">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="378" y="206" key="com.intellij.ide.util.TipDialog/0.0.1366.768@0.0.1366.768" timestamp="1581406512463" />
+    <state x="378" y="206" key="com.intellij.ide.util.TipDialog/0.0.1366.768@0.0.1366.768" timestamp="1581418405935" />
     <state x="346" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1581268831343">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
