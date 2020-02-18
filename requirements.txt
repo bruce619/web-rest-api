@@ -197,9 +197,6 @@ smtp-faker==0.1.2
 smtp-mail==0.0.2
 smtp2go==2.0.0
 snowballstemmer==1.9.0
-soccer==0.0.2
-soccer-cli==0.1.1.0
-soccerpy==0.1.0
 soupsieve==1.7.3
 Sphinx==2.1.2
 sphinxcontrib-applehelp==1.0.1
