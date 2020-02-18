@@ -162,7 +162,6 @@ PyMysqlDB==0.0.2
 pyparsing==2.4.0
 pypi==2.1
 pypl==40.10
-pysoccer==0.0.3
 pytest==5.0.1
 pytest-cov==2.7.1
 pytest-runner==5.1
