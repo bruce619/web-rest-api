@@ -19,7 +19,7 @@ from myapiapp.api.serializers import ProjectSerializer, ActionSerializer
 def get_create_project_api_view(request):
 
     if request.method == 'GET':
-        project = Project.objects.all()
+        project = Project.objects.all().order_by("-created_at")
         serializer = ProjectSerializer(project, many=True)
         return JsonResponse({'projects': serializer.data}, safe=False, status=status.HTTP_200_OK)
 
@@ -41,7 +41,7 @@ def get_update_delete_project_api_view(request, project_id=None):
 
     if request.method == 'GET':
         try:
-            project = Project.objects.filter(id=project_id)
+            project = Project.objects.filter(id=project_id).order_by("-created_at")
         except Project.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -49,7 +49,7 @@ def get_update_delete_project_api_view(request, project_id=None):
         return JsonResponse({'project': serializer.data}, safe=False, status=status.HTTP_200_OK)
 
     try:
-        project = Project.objects.get(id=project_id)
+        project = Project.objects.get(id=project_id).order_by("-created_at")
     except Project.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -116,7 +116,7 @@ def get_create_action_api_view(request, project_id=None):
 @permission_classes([IsAuthenticated])
 def get_all_action_api_view(request):
     try:
-        action = Action.objects.all()
+        action = Action.objects.all().order_by("-created_at")
     except Action.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -129,52 +129,52 @@ def get_all_action_api_view(request):
 @api_view(['GET'])
 @csrf_exempt
 @permission_classes([IsAuthenticated])
-def get_single_action_api_view(request, id=None):
+def get_single_action_api_view(request, action_id=None):
     try:
-        action = Action.objects.filter(id=id)
+        action = Action.objects.filter(id=action_id).order_by("-created_at")
     except Action.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = ActionSerializer(action, many=True)
-        return JsonResponse({"actions": serializer.data}, safe=False, status=status.HTTP_200_OK)
+        return JsonResponse({"action": serializer.data}, safe=False, status=status.HTTP_200_OK)
 
 
 # get, update, delete action
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes((IsAuthenticated,))
-def api_get_update_delete_action_view(request, action_id, project_id):
+def get_update_delete_action_api_view(request, action_id, project_id):
+
+    if request.method == 'GET':
+        try:
+            action = Action.objects.filter(id=action_id, project=project_id)
+        except Action.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if request.method == 'GET':
+            serializer = ActionSerializer(action, many=True)
+            return JsonResponse({"action": serializer.data}, safe=False, status=status.HTTP_200_OK)
+
     try:
-        action = Action.objects.get(id=action_id)
-        project = Project.objects.get(id=project_id)
+        action = Action.objects.get(id=action_id, project=project_id)
     except Project.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     user = request.user
+    project = Project.objects.get(id=project_id)
 
     if project.user != user and action.user != user:
-        return Response({'Response': 'You do not have the permission to edit this'})
+        return Response({'Response': 'You do not have the permission to edit / delete this'})
 
-    if request.method == 'GET':
-        if request.method == 'GET':
-            serializer = ActionSerializer(action, project)
-            return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = ActionSerializer(action, request.data)
-        data = {}
+    if request.method == 'PUT':
+        serializer = ActionSerializer(action, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            data['success'] = 'Update Successful'
-            return Response(data=data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'action': serializer.data}, safe=False, status=status.HTTP_200_OK)
+        return Response({'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        operation = action.delete()
-        data = {}
-        if operation:
-            data['success'] = 'successful delete'
-        else:
-            data['failure'] = 'delete failed'
-        return Response(data=data)
+        action.delete()
+        return JsonResponse({'success': "successfully deleted"}, status=status.HTTP_204_NO_CONTENT)
+
 
