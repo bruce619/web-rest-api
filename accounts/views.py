@@ -12,13 +12,13 @@ def register(request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password1')
-            account = authenticate(username=username, password=password)
+            account = authenticate(email=email, password=password)
             login(request, account)
             # Success message after submission
             sweetify.success(request, title='Account Created',
-                             text=f'Your account has been created for {username}', icon='success',
+                             text=f'Your account has been created for {email}', icon='success',
                              button='Ok', timer=3000)
             return redirect('login')
     else:
@@ -45,9 +45,9 @@ def login_view(request):
     if request.method == 'POST':
         form = AccountAuthenticationForm(request.POST)
         if form.is_valid():
-            username = request.POST['username']
+            email = request.POST['email']
             password = request.POST['password']
-            user = authenticate(username=username, password=password)
+            user = authenticate(email=email, password=password)
             if user is not None:
                 if user.is_active:
                     login(request, user)

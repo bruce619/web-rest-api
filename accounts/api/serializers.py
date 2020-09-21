@@ -1,34 +1,58 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from ..models import User
+from django.contrib.auth import authenticate
+from django.utils.translation import ugettext as _
 
 
 class UserSerializer(serializers.ModelSerializer):
-    password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
-
-    def __init__(self, *args, **kwargs):
-        # first call parent's constructor
-        super(UserSerializer, self).__init__(*args, **kwargs)
-        # there's a `fields` property now
-        self.fields['username'].required = True
+    password = serializers.CharField(style={'input_type': 'password'}, write_only=True)
 
     class Meta:
         model = User
-        fields = ['email', 'username', 'password', 'password2']
-        extra_kwargs = {
-            'password': {'write_only': True}
-        }
+        fields = ['id', 'email', 'password']
+        write_only_fields = ('password',)
+        read_only_fields = ('id',)
 
-    def save(self):
-        account = User(
-            username=self.validated_data['username'],
-            email=self.validated_data['email'],
+    def create(self, validated_data):
+        user = User.objects.create(
+            email=validated_data['email'],
         )
-        password = self.validated_data['password']
-        password2 = self.validated_data['password2']
 
-        if password != password2:
-            raise serializers.ValidationError({'password': 'password must match'})
-        account.set_password(password)
-        account.save()
-        return account
+        user.set_password(validated_data['password'])
+        user.save()
+
+        return user
+
+    def update(self, instance, validated_data):
+        instance.email = validated_data.get('email', instance.email)
+        if 'password' in validated_data:
+            password = validated_data.pop('password')
+            instance.set_password(password)
+        return super(UserSerializer, self).update(instance, validated_data)
+
+
+class AuthCustomTokenSerializer(serializers.Serializer):
+    email = serializers.EmailField(style={'input_type': 'email'}, label=_("Email"))
+    password = serializers.CharField(style={'input_type': 'password'}, write_only=True)
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+        password = attrs.get('password')
+
+        if email and password:
+            user = authenticate(request=self.context.get('request'),
+                                email=email, password=password)
+
+            # The authenticate call simply returns None for is_active=False
+            # users. (Assuming the default ModelBackend authentication
+            # backend.)
+            if not user:
+                msg = _('Invalid email or password. Try again with correct credentials')
+                raise serializers.ValidationError(msg, code='authorization')
+        else:
+            msg = _('Must include "email" and "password".')
+            raise serializers.ValidationError(msg, code='authorization')
+
+        attrs['user'] = user
+        return attrs
 
