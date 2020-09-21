@@ -5,9 +5,6 @@ from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.generics import ListAPIView, ListCreateAPIView
-from django.core.exceptions import ObjectDoesNotExist
-import json
 from myapiapp.models import Project, Action
 from myapiapp.api.serializers import ProjectSerializer, ActionSerializer
 
