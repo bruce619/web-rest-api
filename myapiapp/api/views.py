@@ -33,15 +33,15 @@ def get_create_project_api_view(request):
         return Response({'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-# retrieve a a single project, update a project, delete a project
+# retrieve a single project, update a project, delete a project
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
 @csrf_exempt
 @permission_classes([IsAuthenticated])
-def get_update_delete_project_api_view(request, id=None):
+def get_update_delete_project_api_view(request, project_id=None):
 
     if request.method == 'GET':
         try:
-            project = Project.objects.filter(id=id)
+            project = Project.objects.filter(id=project_id)
         except Project.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -49,7 +49,7 @@ def get_update_delete_project_api_view(request, id=None):
         return JsonResponse({'project': serializer.data}, safe=False, status=status.HTTP_200_OK)
 
     try:
-        project = Project.objects.get(id=id)
+        project = Project.objects.get(id=project_id)
     except Project.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -83,10 +83,10 @@ def get_update_delete_project_api_view(request, id=None):
 @api_view(['GET', 'POST'])
 @csrf_exempt
 @permission_classes((IsAuthenticated,))
-def get_create_action_api_view(request, id=None):
+def get_create_action_api_view(request, project_id=None):
 
     try:
-        project = Project.objects.get(id=id)
+        project = Project.objects.get(id=project_id)
     except Project.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -125,55 +125,56 @@ def get_all_action_api_view(request):
         return JsonResponse({"actions": serializer.data}, safe=False, status=status.HTTP_200_OK)
 
 
-# # retrieve a single action
-# @api_view(['GET', ])
-# @permission_classes((IsAuthenticated,))
-# def api_single_action_view(request, actionid):
-#     try:
-#         action = Action.objects.get(slug=actionid)
-#     except Project.DoesNotExist:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
-#
-#     if request.method == 'GET':
-#         serializer = ActionSerializer(action)
-#         return Response(serializer.data)
-#
-#
-# # get, update, delete action
-# @api_view(['GET', 'PUT', 'DELETE'])
-# @permission_classes((IsAuthenticated,))
-# def api_get_update_delete_action_view(request, actionid, projectid):
-#     try:
-#         action = Action.objects.get(slug=actionid)
-#         project = Project.objects.get(slug=projectid)
-#     except Project.DoesNotExist:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
-#
-#     user = request.user
-#
-#     if project.user != user and action.user != user:
-#         return Response({'Response': 'You do not have the permission to edit this'})
-#
-#     if request.method == 'GET':
-#         if request.method == 'GET':
-#             serializer = ActionSerializer(action, project)
-#             return Response(serializer.data)
-#
-#     elif request.method == 'PUT':
-#         serializer = ActionSerializer(action, request.data)
-#         data = {}
-#         if serializer.is_valid():
-#             serializer.save()
-#             data['success'] = 'Update Successful'
-#             return Response(data=data)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
-#     elif request.method == 'DELETE':
-#         operation = action.delete()
-#         data = {}
-#         if operation:
-#             data['success'] = 'successful delete'
-#         else:
-#             data['failure'] = 'delete failed'
-#         return Response(data=data)
+# retrieve a single action
+@api_view(['GET'])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def get_single_action_api_view(request, id=None):
+    try:
+        action = Action.objects.filter(id=id)
+    except Action.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = ActionSerializer(action, many=True)
+        return JsonResponse({"actions": serializer.data}, safe=False, status=status.HTTP_200_OK)
+
+
+# get, update, delete action
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes((IsAuthenticated,))
+def api_get_update_delete_action_view(request, action_id, project_id):
+    try:
+        action = Action.objects.get(id=action_id)
+        project = Project.objects.get(id=project_id)
+    except Project.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    user = request.user
+
+    if project.user != user and action.user != user:
+        return Response({'Response': 'You do not have the permission to edit this'})
+
+    if request.method == 'GET':
+        if request.method == 'GET':
+            serializer = ActionSerializer(action, project)
+            return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = ActionSerializer(action, request.data)
+        data = {}
+        if serializer.is_valid():
+            serializer.save()
+            data['success'] = 'Update Successful'
+            return Response(data=data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        operation = action.delete()
+        data = {}
+        if operation:
+            data['success'] = 'successful delete'
+        else:
+            data['failure'] = 'delete failed'
+        return Response(data=data)
 
