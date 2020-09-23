@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['rest-web-api-vgg.herokuapp.com', 'https://www.rest-web-api-vgg.herokuapp.com']
 
 
 # Application definition
