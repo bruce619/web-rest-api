@@ -1,5 +1,5 @@
 from django import forms
-from .models import Projects, Actions
+from .models import Project, Action
 
 
 class CreateProjectForm(forms.ModelForm):
@@ -12,7 +12,7 @@ class CreateProjectForm(forms.ModelForm):
         self.fields['description'].required = True
 
     class Meta:
-        model = Projects
+        model = Project
         fields = ['name', 'description', 'completed']
         exclude = ('user',)
 
@@ -37,13 +37,13 @@ class CreateActionForm(forms.ModelForm):
         # first call parent's constructor
         super(CreateActionForm, self).__init__(*args, **kwargs)
         # there's a `fields` property now
-        self.fields['project_id'].required = True
+        self.fields['project'].required = True
         self.fields['description'].required = True
         self.fields['note'].required = True
 
     class Meta:
-        model = Actions
-        fields = ['project_id', 'description', 'note']
+        model = Action
+        fields = ['project', 'description', 'note']
         exclude = ('user',)
 
     def is_valid(self):

@@ -32,7 +32,21 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="83f43472-c450-474b-a486-10dfb28228f4" name="Default Changelist" comment="" />
+    <list default="true" id="83f43472-c450-474b-a486-10dfb28228f4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/api/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapiapp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapiapp/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapiapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapiapp/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapiapp/views/action.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapiapp/views/action.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapiapp/views/home.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapiapp/views/home.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapiapp/views/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapiapp/views/project.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/action_confirm_delete.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/action_confirm_delete.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/project.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/project.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/project_details.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/project_details.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -62,7 +76,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../VendorApp" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">

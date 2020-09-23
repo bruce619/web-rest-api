@@ -1,6 +1,6 @@
 from ..models import Project, Action
 from django.views.generic import ListView, DetailView
-from django.contrib.auth.models import User
+from accounts.models import User
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 

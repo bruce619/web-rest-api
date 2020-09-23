@@ -4,14 +4,25 @@
 {% block content %}
 {% if user.is_authenticated %}
 <center>
-  Hi {{ user.username }}!
-
+  <br><br>
+  <h2>Hi {{ user.username }}!</h2>
+  <br>
   <p><a href="{% url 'logout' %}">logout</a></p>
+  <br>
+  <p><a href="{% url 'project-create' %}">create a project</a></p>
+  <br>
+  <p><a href="{% url 'profile' %}">my profile</a></p>
+  <br>
+  <p><a href="{% url 'project-listing' %}">list of projects </a></p>
 
+</center>
 {% else %}
-
+<center>
+  <br><br>
+  <h1> WELCOME TO PROJECT-ACTION WEB API HOME PAGE</h1>
+  <br>
   <p>You are not logged in</p>
-  <a href="{% url 'login' %}">login</a>
+  <a href="{% url 'login' %}" style="color:blue;"><button style="color:blue; border-radius: 24px;">login</button></a>
 {% endif %}
 </center>
 {% endblock %}

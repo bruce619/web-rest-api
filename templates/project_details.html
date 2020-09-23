@@ -2,20 +2,26 @@
 {% block title %}Project Detail{% endblock %}
 
 {% block content %}
-
+<center>
 <h3>{{object.name | safe }}</h3>
-<div class="mb-5">
-  <h3 class="h5 d-flex align-items-center mb-4 text-primary">Description</h3>
+<div class="mb-5" style="text-align: center;">
+  Description
+    <br><br>
   <p>{{ object.description|safe }}</p>
 </div>
+    <br><br>
 {% if project.completed %}
     <p>This Project has been completed</p>
+<br>
 {% else %}
     <p>project yet to be completed</p>
 {% endif %}
 <hr>
-<a class="btn btn-default" href="{% url 'create-action' projects.id %}">Add Action</a>
+    <br><br>
+<a class="btn btn-primary btn-sm mt-1 mb-1" href="{% url 'create-action' projects.id %}">Add Action</a>
 <hr>
+        <br><br>
+
 {% for action in projects.actions.all %}
     {% if user.is_authenticated %}
     <div class="action">
@@ -23,13 +29,14 @@
         <p>{{ action.note|linebreaks }}</p>
     </div>
     {% endif %}
-{% empty %}
-    <p>No comments here yet :(</p>
+
 {% endfor %}
 
 Update or delete action <hr>
 {% if object.user == user %}
 <div>
+        <br><br>
+
 <a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'action-update' object.id %}">Update action</a>
 <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'action-delete' object.id %}">Delete action</a>
 </div>
@@ -43,5 +50,5 @@ update or delete project <hr>
 </div>
 {% endif %}
 
-
+</center>
 {% endblock %}
