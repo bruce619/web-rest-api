@@ -52,7 +52,7 @@ simplejson==3.17.0
 six==1.15.0
 sockjs-tornado==1.0.7
 soupsieve==2.0.1
-sqlparse==0.4.1
+sqlparse==0.4.2
 stripe==2.48.0
 swapper==1.1.2.post1
 sweetify==2.0.0
